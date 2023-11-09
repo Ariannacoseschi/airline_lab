@@ -1,13 +1,31 @@
 package com.example.airline_api.models;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "passengers")
 public class Passenger {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private long id;
+    @Column
     private String name;
+    @Column
     private String email;
+    @Column (name = "flight_number" )
+    private int flightNumber;
+
+    @ManyToMany
+    @JoinTable(
+            name = "passenger_flights",
+            joinColumns = @JoinColumn(name = "passenger_id"),
+            inverseJoinColumns = @JoinColumn(name = "flight_id")
+    )
     private List<Flight> flights;
 
     public Passenger(String name, String email) {
@@ -43,11 +61,23 @@ public class Passenger {
         this.email = email;
     }
 
+    public int getFlightNumber() {
+        return flightNumber;
+    }
+
+    public void setFlightNumber(int flightNumber) {
+        this.flightNumber = flightNumber;
+    }
+
     public List<Flight> getFlights() {
         return flights;
     }
 
     public void setFlights(List<Flight> flights) {
         this.flights = flights;
+    }
+
+    public void addFlight(Flight flight){
+        this.flights.add(flight);
     }
 }

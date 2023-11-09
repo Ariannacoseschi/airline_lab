@@ -1,2 +1,4 @@
-package com.example.airline_api.services;public class FlightServices {
+package com.example.airline_api.services;
+
+public class FlightServices {
 }
