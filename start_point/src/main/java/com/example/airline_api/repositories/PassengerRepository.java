@@ -11,4 +11,5 @@ public interface PassengerRepository extends JpaRepository<Passenger, Long> {
 
     List<Passenger> findByFlightNumber(int flightNumber);
 
+    void addNewPassenger(Passenger colin);
 }

@@ -1,7 +1,10 @@
 package com.example.airline_api.controllers;
 
+import com.example.airline_api.models.BookingDTO;
 import com.example.airline_api.models.Flight;
+import com.example.airline_api.services.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,34 +14,45 @@ import java.util.List;
 @RequestMapping("/flights")
 public class FlightController {
 
-    // Display all available flights
+    @Autowired
+    FlightService flightServices;
+
+
     @GetMapping
     public ResponseEntity<List<Flight>> getAllFlights(){
-        return null;
+        FlightController flightService;
+        List<Flight> flights = flightServices.getAllFlights();
+        return new ResponseEntity<>(flights, HttpStatus.OK);
     }
 
-    // Display a specific flight
+
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Flight> getFlightById(){
-        return null;
+    public ResponseEntity<Flight> getFlightById(@PathVariable long id){
+        Flight flight = flightServices.getFlightById(id);
+        return new ResponseEntity<>(flight, HttpStatus.OK);
     }
 
-    // Add details of a new flight
+
     @PostMapping
-    public ResponseEntity<Flight> addNewFlight(){
-        return null;
+    public ResponseEntity<Flight> addNewFlight(@RequestBody Flight flight){
+        Flight savedFlight = flightServices.addNewFlight(flight);
+        return new ResponseEntity<>(savedFlight, HttpStatus.CREATED);
     }
 
-    // Book passenger on a flight
+
     @PatchMapping(value = "/{id}")
-    public ResponseEntity<Flight> addPassengerToFlight(){
-        return null;
+    public ResponseEntity<Flight> addPassengerToFlight(@PathVariable long id, @RequestBody BookingDTO bookingDTO){
+        long passengerId = bookingDTO.getPassengerId();
+        Flight updatedFlight = flightServices.addPassengerToFlight(id, passengerId);
+        return new ResponseEntity<>(updatedFlight, HttpStatus.OK);
     }
 
-    // Cancel flight
+
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity cancelFlight(){
-        return null;
+    public ResponseEntity cancelFlight(@PathVariable long id){
+        flightServices.deleteFlight(id);
+        return new ResponseEntity(null, HttpStatus.NO_CONTENT);
     }
+
 
 }

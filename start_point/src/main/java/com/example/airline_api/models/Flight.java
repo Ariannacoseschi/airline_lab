@@ -21,8 +21,15 @@ public class Flight {
     private String departureDate;
     @Column
     private String departureTime;
+
+    @ManyToMany
+    @JoinTable(
+                name = "flights_passengers",
+                joinColumns = {@JoinColumn(name = "flight_id", nullable = false)},
+                inverseJoinColumns = {@JoinColumn(name = "passenger_id", nullable = false)}
+    )
+
     @JsonIgnoreProperties({"flights"})
-    @ManyToMany(mappedBy = "flights")
     private List<Passenger> passengers;
 
     public Flight(String destination, int capacity, String departureDate, String departureTime) {

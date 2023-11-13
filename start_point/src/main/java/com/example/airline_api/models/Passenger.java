@@ -1,12 +1,12 @@
 package com.example.airline_api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "passengers")
+@Entity(name = "passengers")
 public class Passenger {
 
     @Id
@@ -20,12 +20,9 @@ public class Passenger {
     @Column (name = "flight_number" )
     private int flightNumber;
 
-    @ManyToMany
-    @JoinTable(
-            name = "passenger_flights",
-            joinColumns = @JoinColumn(name = "passenger_id"),
-            inverseJoinColumns = @JoinColumn(name = "flight_id")
-    )
+    @JsonIgnoreProperties({"passengers"})
+    @ManyToMany(mappedBy = "passengers")
+
     private List<Flight> flights;
 
     public Passenger(String name, String email) {
