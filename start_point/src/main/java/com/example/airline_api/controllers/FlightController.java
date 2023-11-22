@@ -1,6 +1,5 @@
 package com.example.airline_api.controllers;
 
-import com.example.airline_api.models.BookingDTO;
 import com.example.airline_api.models.Flight;
 import com.example.airline_api.services.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,50 +8,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/flights")
+@RequestMapping("flights")
 public class FlightController {
 
     @Autowired
-    FlightService flightServices;
-
+    FlightService flightService;
 
     @GetMapping
-    public ResponseEntity<List<Flight>> getAllFlights(){
-        FlightController flightService;
-        List<Flight> flights = flightServices.getAllFlights();
-        return new ResponseEntity<>(flights, HttpStatus.OK);
+    public ResponseEntity<List<Flight>> getAllFlights(
+            @RequestParam(required = false, name = "flightPerPassenger") Integer flightPerPassenger
+    ){
+        if(flightPerPassenger != null){
+            return new ResponseEntity<>(flightService.findAllFlightsPerPassenger(flightPerPassenger), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(flightService.findAllFlights(), HttpStatus.OK);
     }
-
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Flight> getFlightById(@PathVariable long id){
-        Flight flight = flightServices.getFlightById(id);
-        return new ResponseEntity<>(flight, HttpStatus.OK);
+    public ResponseEntity<Optional<Flight>>getFlightById(@PathVariable Long id) {
+        return new ResponseEntity(flightService.findFlight(id), HttpStatus.OK);
     }
-
-
-    @PostMapping
-    public ResponseEntity<Flight> addNewFlight(@RequestBody Flight flight){
-        Flight savedFlight = flightServices.addNewFlight(flight);
-        return new ResponseEntity<>(savedFlight, HttpStatus.CREATED);
-    }
-
-
-    @PatchMapping(value = "/{id}")
-    public ResponseEntity<Flight> addPassengerToFlight(@PathVariable long id, @RequestBody BookingDTO bookingDTO){
-        long passengerId = bookingDTO.getPassengerId();
-        Flight updatedFlight = flightServices.addPassengerToFlight(id, passengerId);
-        return new ResponseEntity<>(updatedFlight, HttpStatus.OK);
-    }
-
-
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity cancelFlight(@PathVariable long id){
-        flightServices.deleteFlight(id);
-        return new ResponseEntity(null, HttpStatus.NO_CONTENT);
-    }
-
 
 }

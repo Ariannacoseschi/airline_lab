@@ -14,30 +14,38 @@ import org.springframework.stereotype.Component;
 
     @Component
     public class DataLoader implements ApplicationRunner {
-
         @Autowired
         FlightRepository flightRepository;
 
         @Autowired
         PassengerRepository passengerRepository;
 
-
-        @Override
-        public void run(ApplicationArguments args) throws Exception {
-
-            Flight flight1 = new Flight("JK", 2, "10-10-2023", "16:00PM");
-            flightRepository.addNewFlight(flight1);
-
-            Flight flight2 = new Flight("lIMA", 2, "10-10-2023", "16:00PM");
-            flightRepository.addNewFlight(flight2);
-
-            Passenger colin = new Passenger("Suana Cole"," suanacole@gmail.com");
-            passengerRepository.addNewPassenger(colin);
-
-            Passenger anna = new Passenger("Lein Cole", "leincole@gmail.com");
-            passengerRepository.addNewPassenger(anna);
+        public DataLoader() {
         }
 
+        public DataLoader(PassengerRepository passengerRepository, FlightRepository flightRepository){
+            this.passengerRepository = passengerRepository;
+            this.flightRepository = flightRepository;
+        }
+
+       // running
+        @Override
+        public void run(ApplicationArguments args) throws Exception {
+            //taking in destination, capacity, departureDate and departureTime
+
+            Flight flight = new Flight("Lima", 2, "15-11-2023", "09:00 AM");
+            flightRepository.save(flight);
+
+            Passenger passenger = new Passenger("Sarah", "Sarahjames@google.com");
+            passengerRepository.save(passenger);
+
+            Passenger passenger1 = new Passenger("Betty", "BettyBoop@bettyworld.com");
+            passengerRepository.save(passenger1);
+
+            Passenger passenger2 = new Passenger("Taylor", "Taylor@swifties.com");
+            passengerRepository.save(passenger2);
+
+        }
     }
 
 

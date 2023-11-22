@@ -17,12 +17,10 @@ public class Passenger {
     private String name;
     @Column
     private String email;
-    @Column (name = "flight_number" )
-    private int flightNumber;
+
 
     @JsonIgnoreProperties({"passengers"})
     @ManyToMany(mappedBy = "passengers")
-
     private List<Flight> flights;
 
     public Passenger(String name, String email) {
@@ -58,13 +56,6 @@ public class Passenger {
         this.email = email;
     }
 
-    public int getFlightNumber() {
-        return flightNumber;
-    }
-
-    public void setFlightNumber(int flightNumber) {
-        this.flightNumber = flightNumber;
-    }
 
     public List<Flight> getFlights() {
         return flights;

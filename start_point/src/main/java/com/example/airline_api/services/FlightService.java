@@ -19,32 +19,39 @@ public class FlightService {
     @Autowired
     PassengerService passengerService;
 
-    public List<Flight> getAllFlights(){
+    //finding all the flights beloging to a passenger
+    public List<Flight> findAllFlightsPerPassenger(int flights) {
+        return flightRepository.findAllFligthsPerPassenger(flights);
+    }
+
+    public List<Flight> findAllFlights() {
         return flightRepository.findAll();
     }
 
-    public Flight getFlightById(long id){
+    public Flight findFlight(Long id) {
         return flightRepository.findById(id).get();
     }
 
-    public Flight addNewFlight(Flight flight){
+    // saving and returning flight Object
+    public Flight saveFlight(Flight flight) {
         flightRepository.save(flight);
         return flight;
     }
-
 
     @Transactional
     public Flight addPassengerToFlight(long flightId, long passengerId){
-        Flight flight = flightRepository.findById(flightId).get();
-        Passenger passenger = passengerService.getPassengerById(passengerId);
-        List<Passenger> passengers = flight.getPassengers();
+        Flight flight = flightRepository.flightById(flightId).get((int) flightId); //i wrote the code the way i thought it is supposed to go but kept getting error and it re-correcting to get((int) and im unsure as to why yet
+        Passenger passenger = new Passenger();
+        List<Passenger> passengers = flight.getPassenger();
         passengers.add(passenger);
-        flight.setPassengers(passengers);
+        flight.setPassenger(passenger);
         flightRepository.save(flight);
         return flight;
     }
 
-    public void deleteFlight(long id){
-        flightRepository.deleteById(id);
-    }
+    public void deleteFlight(long id) { flightRepository.deleteById(id);}
+
+
+
 }
+
