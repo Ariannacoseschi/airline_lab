@@ -20,19 +20,19 @@ public class Flight {
     @Column
     private String departureDate;
     @Column(name = "departure_time")
-    private int departureTime;
+    private String departureTime;
 
     @ManyToMany
     @JoinTable(
                 name = "flights_passengers",
                 joinColumns = {@JoinColumn(name = "flight_id")},
-                inverseJoinColumns = {@JoinColumn(name = "passenger_id",)}
+                inverseJoinColumns = {@JoinColumn(name = "passenger_id")}
     )
 
     @JsonIgnoreProperties({"flights"})
     private List<Passenger> passengers;
 
-    public Flight(String destination, int capacity, String departureDate, int departureTime) {
+    public Flight(String destination, int capacity, String departureDate, String departureTime) {
         this.destination = destination;
         this.capacity = capacity;
         this.departureDate = departureDate;

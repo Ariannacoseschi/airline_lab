@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
         public void run(ApplicationArguments args) throws Exception {
             //taking in destination, capacity, departureDate and departureTime
 
-            Flight flight = new Flight("Lima", 2, "15-11-2023", "09:00 AM");
+            Flight flight = new Flight("Lima", 2, "15-11-2023", "Morning");
             flightRepository.save(flight);
 
             Passenger passenger = new Passenger("Sarah", "Sarahjames@google.com");
@@ -46,6 +46,8 @@ import org.springframework.stereotype.Component;
             passengerRepository.save(passenger2);
 
         }
+
+
     }
 
 
